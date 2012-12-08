@@ -1,6 +1,7 @@
 /* //device/libs/telephony/ril_unsol_commands.h
 **
 ** Copyright 2006, The Android Open Source Project
+** Copyright (c) 2012, The Linux Foundation. All rights reserved.
 **
 ** Licensed under the Apache License, Version 2.0 (the "License");
 ** you may not use this file except in compliance with the License.
@@ -50,3 +51,4 @@
     {RIL_UNSOL_EXIT_EMERGENCY_CALLBACK_MODE, responseVoid, WAKE_PARTIAL},
     {RIL_UNSOL_RIL_CONNECTED, responseInts, WAKE_PARTIAL},
     {RIL_UNSOL_VOICE_RADIO_TECH_CHANGED, responseInts, WAKE_PARTIAL},
+    {RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED, responseVoid, WAKE_PARTIAL},
