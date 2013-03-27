@@ -3795,6 +3795,26 @@ typedef struct {
  */
 #define RIL_REQUEST_SET_SUBSCRIPTION_MODE 122
 
+/**
+ *  RIL_REQUEST_SET_SMS_PRE_STORE
+ *
+ *  Sets the sms preferred storage
+ * "data" is const int *
+ * ((const int *)data) [0]    1 indicates none, mean phone memory
+                              2 indicates card like SIM/USIM
+ *
+ * "response" is NULL
+ *
+ *  Valid errors:
+ *
+ *  SUCCESS
+ *  RADIO_NOT_AVAILABLE (radio resetting)
+ *  GENERIC_FAILURE
+ *  SUBSCRIPTION_NOT_AVAILABLE
+ *
+ */
+#define RIL_REQUEST_SET_SMS_PRE_STORE 123
+
 /***********************************************************************/
 
 
