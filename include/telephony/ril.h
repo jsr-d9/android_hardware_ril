@@ -3808,12 +3808,28 @@ typedef struct {
  *  Valid errors:
  *
  *  SUCCESS
- *  RADIO_NOT_AVAILABLE (radio resetting)
  *  GENERIC_FAILURE
- *  SUBSCRIPTION_NOT_AVAILABLE
  *
  */
 #define RIL_REQUEST_SET_SMS_PRE_STORE 123
+
+/**
+ *  RIL_REQUEST_SET_SIM_SMS_READ
+ *
+ *  Sets the sms preferred storage
+ * "data" is const int *
+ * ((const int *)data) [0]    1 indicates index
+                              2 indicates message_mode, GW or CDMA
+ *
+ * "response" is NULL
+ *
+ *  Valid errors:
+ *
+ *  SUCCESS
+ *  GENERIC_FAILURE
+ *
+ */
+#define RIL_REQUEST_SET_SIM_SMS_READ 124
 
 /***********************************************************************/
 
