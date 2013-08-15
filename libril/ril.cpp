@@ -2807,6 +2807,7 @@ static void processWakeupCallback(int fd, short flags, void *param) {
     int ret;
 
     ALOGV("processWakeupCallback");
+    ALOGE("processWakeupCallback");
 
     /* empty our wakeup socket out */
     do {
@@ -3234,10 +3235,12 @@ eventLoop(void *param) {
     int ret;
     int filedes[2];
 
+    ALOGE("entering eventLoop");
     ril_event_init();
 
     pthread_mutex_lock(&s_startupMutex);
 
+    ALOGE("setting s_started as 1");
     s_started = 1;
     pthread_cond_broadcast(&s_startupCond);
 
