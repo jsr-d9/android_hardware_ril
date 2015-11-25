@@ -497,6 +497,13 @@ processCommandBuffer(void *buffer, size_t buflen, RIL_SOCKET_ID socket_id) {
         return 0;
     }
 
+#ifdef RIL_VARIANT_LEGACY
+    if (request > 0 && request < (int32_t)NUM_ELEMS(s_commands) 
+      && s_commands[request].requestNumber == 0) {
+        request += 20000;
+    }
+#endif
+
     if (request < 1 || request >= (int32_t)NUM_ELEMS(s_commands)) {
         Parcel pErr;
         RLOGE("unsupported request code %d token %d", request, token);
@@ -850,6 +857,15 @@ dispatchSIM_IO (Parcel &p, RequestInfo *pRI) {
     memset (&simIO, 0, sizeof(simIO));
 
     // note we only check status at the end
+
+#ifdef RIL_SUPPORTS_SEEK
+    simIO.v6.cla = 0;
+    if(pRI->pCI->requestNumber == RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC ||
+            pRI->pCI->requestNumber == RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL ) {
+        status = p.readInt32(&t);
+        simIO.v6.cla = (int)t;
+    }
+#endif
 
     status = p.readInt32(&t);
     simIO.v6.command = (int)t;
@@ -4099,6 +4115,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
     RLOGI("s_registerCalled flag set, %d", s_started);
     // Little self-check
 
+#ifndef RIL_VARIANT_LEGACY
     for (int i = 0; i < (int)NUM_ELEMS(s_commands); i++) {
         assert(i == s_commands[i].requestNumber);
     }
@@ -4107,6 +4124,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
         assert(i + RIL_UNSOL_RESPONSE_BASE
                 == s_unsolResponses[i].requestNumber);
     }
+#endif
 
     // New rild impl calls RIL_startEventLoop() first
     // old standalone impl wants it here.
@@ -4472,6 +4490,14 @@ void RIL_onUnsolicitedResponse(int unsolResponse, void *data,
     }
 
     unsolResponseIndex = unsolResponse - RIL_UNSOL_RESPONSE_BASE;
+
+#ifdef RIL_VARIANT_LEGACY
+    if (unsolResponseIndex > 0 && unsolResponseIndex < (int32_t)NUM_ELEMS(s_unsolResponses)
+      && s_unsolResponses[unsolResponseIndex].requestNumber == 0) {
+        unsolResponseIndex += 20000;
+        unsolResponse += 20000;
+    }
+#endif
 
     if ((unsolResponseIndex < 0)
         || (unsolResponseIndex >= (int32_t)NUM_ELEMS(s_unsolResponses))) {

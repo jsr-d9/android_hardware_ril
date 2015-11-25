@@ -123,11 +123,31 @@
     {RIL_REQUEST_ACKNOWLEDGE_INCOMING_GSM_SMS_WITH_PDU, dispatchStrings, responseVoid},
     {RIL_REQUEST_STK_SEND_ENVELOPE_WITH_STATUS, dispatchString, responseSIM_IO},
     {RIL_REQUEST_VOICE_RADIO_TECH, dispatchVoiceRadioTech, responseInts},
+#ifndef RIL_VARIANT_LEGACY
     {RIL_REQUEST_GET_CELL_INFO_LIST, dispatchVoid, responseCellInfoList},
     {RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE, dispatchInts, responseVoid},
     {RIL_REQUEST_SET_INITIAL_ATTACH_APN, dispatchSetInitialAttachApn, responseVoid},
+#endif
     {RIL_REQUEST_IMS_REGISTRATION_STATE, dispatchVoid, responseInts},
     {RIL_REQUEST_IMS_SEND_SMS, dispatchImsSms, responseSMS},
+#ifdef RIL_VARIANT_LEGACY
+    {RIL_REQUEST_GET_DATA_CALL_PROFILE, dispatchInts, responseGetDataCallProfile},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {RIL_REQUEST_SET_UICC_SUBSCRIPTION, dispatchUiccSubscripton, responseVoid},
+    {RIL_REQUEST_SET_DATA_SUBSCRIPTION, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC, dispatchSIM_IO, responseSIM_IO},
+    {RIL_REQUEST_SIM_OPEN_CHANNEL, dispatchString, responseInts},
+    {RIL_REQUEST_SIM_CLOSE_CHANNEL, dispatchInts, responseVoid},
+    {RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL, dispatchSIM_IO, responseSIM_IO},
+#else
     {RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC, dispatchSIM_APDU, responseSIM_IO},
     {RIL_REQUEST_SIM_OPEN_CHANNEL, dispatchString, responseInts},
     {RIL_REQUEST_SIM_CLOSE_CHANNEL, dispatchInts, responseVoid},
@@ -145,4 +165,5 @@
     {RIL_REQUEST_SET_DATA_PROFILE, dispatchDataProfile, responseVoid},
     {RIL_REQUEST_SHUTDOWN, dispatchVoid, responseVoid},
     {RIL_REQUEST_GET_DATA_CALL_PROFILE, dispatchInts, responseGetDataCallProfile},
+#endif
     {RIL_REQUEST_SIM_GET_ATR, dispatchInts, responseString},

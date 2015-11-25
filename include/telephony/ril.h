@@ -381,6 +381,9 @@ typedef struct {
 } RIL_Dial;
 
 typedef struct {
+#ifdef RIL_SUPPORTS_SEEK
+    int cla;
+#endif
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -395,6 +398,9 @@ typedef struct {
 } RIL_SIM_IO_v5;
 
 typedef struct {
+#ifdef RIL_SUPPORTS_SEEK
+    int cla;
+#endif
     int command;    /* one of the commands listed for TS 27.007 +CRSM*/
     int fileid;     /* EF id */
     char *path;     /* "pathid" from TS 27.007 +CRSM command.
@@ -1289,7 +1295,7 @@ typedef enum {
     RIL_DC_POWER_STATE_LOW      = 1,        // Low power state
     RIL_DC_POWER_STATE_MEDIUM   = 2,        // Medium power state
     RIL_DC_POWER_STATE_HIGH     = 3,        // High power state
-    RIL_DC_POWER_STATE_UNKNOWN  = INT32_MAX // Unknown state
+    RIL_DC_POWER_STATE_UNKNOWN  = 0x7FFFFFFF, /* INT32_MAX */ // Unknown state
 } RIL_DcPowerStates;
 
 /**
@@ -3893,7 +3899,11 @@ typedef struct {
  *
  * "response" is an array of  RIL_CellInfo.
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_CELL_INFO_LIST 20109
+#else
 #define RIL_REQUEST_GET_CELL_INFO_LIST 109
+#endif
 
 /**
  * RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE
@@ -3913,7 +3923,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE 20110
+#else
 #define RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE 110
+#endif
 
 /**
  * RIL_REQUEST_SET_INITIAL_ATTACH_APN
@@ -3927,7 +3941,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *  SUBSCRIPTION_NOT_AVAILABLE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_INITIAL_ATTACH_APN 20111
+#else
 #define RIL_REQUEST_SET_INITIAL_ATTACH_APN 111
+#endif
 
 /**
  * RIL_REQUEST_IMS_REGISTRATION_STATE
@@ -3951,7 +3969,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_IMS_REGISTRATION_STATE 109
+#else
 #define RIL_REQUEST_IMS_REGISTRATION_STATE 112
+#endif
 
 /**
  * RIL_REQUEST_IMS_SEND_SMS
@@ -3974,7 +3996,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_IMS_SEND_SMS 110
+#else
 #define RIL_REQUEST_IMS_SEND_SMS 113
+#endif
 
 /**
  * RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC
@@ -3994,7 +4020,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC 123
+#else
 #define RIL_REQUEST_SIM_TRANSMIT_APDU_BASIC 114
+#endif
 
 /**
  * RIL_REQUEST_SIM_OPEN_CHANNEL
@@ -4016,7 +4046,11 @@ typedef struct {
  *  MISSING_RESOURCE
  *  NO_SUCH_ELEMENT
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_OPEN_CHANNEL 124
+#else
 #define RIL_REQUEST_SIM_OPEN_CHANNEL 115
+#endif
 
 /**
  * RIL_REQUEST_SIM_CLOSE_CHANNEL
@@ -4034,7 +4068,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_CLOSE_CHANNEL 125
+#else
 #define RIL_REQUEST_SIM_CLOSE_CHANNEL 116
+#endif
 
 /**
  * RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL
@@ -4053,7 +4091,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL 126
+#else
 #define RIL_REQUEST_SIM_TRANSMIT_APDU_CHANNEL 117
+#endif
 
 /**
  * RIL_REQUEST_NV_READ_ITEM
@@ -4070,7 +4112,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_NV_READ_ITEM 20118
+#else
 #define RIL_REQUEST_NV_READ_ITEM 118
+#endif
 
 /**
  * RIL_REQUEST_NV_WRITE_ITEM
@@ -4087,7 +4133,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_NV_WRITE_ITEM 20119
+#else
 #define RIL_REQUEST_NV_WRITE_ITEM 119
+#endif
 
 /**
  * RIL_REQUEST_NV_WRITE_CDMA_PRL
@@ -4104,7 +4154,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_NV_WRITE_CDMA_PRL 20120
+#else
 #define RIL_REQUEST_NV_WRITE_CDMA_PRL 120
+#endif
 
 /**
  * RIL_REQUEST_NV_RESET_CONFIG
@@ -4124,7 +4178,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_NV_RESET_CONFIG 20121
+#else
 #define RIL_REQUEST_NV_RESET_CONFIG 121
+#endif
 
  /** RIL_REQUEST_SET_UICC_SUBSCRIPTION
  * FIXME This API needs to have more documentation.
@@ -4142,7 +4200,31 @@ typedef struct {
  *  SUBSCRIPTION_NOT_SUPPORTED
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_UICC_SUBSCRIPTION  118
+#else
 #define RIL_REQUEST_SET_UICC_SUBSCRIPTION  122
+#endif
+
+#ifdef RIL_VARIANT_LEGACY
+/**
+ *  RIL_REQUEST_SET_DATA_SUBSCRIPTION
+ *
+ *  Selects a subscription for data call setup
+ * "data" is NULL
+ *
+ * "response" is NULL
+ *
+ *  Valid errors:
+ *
+ *  SUCCESS
+ *  RADIO_NOT_AVAILABLE (radio resetting)
+ *  GENERIC_FAILURE
+ *  SUBSCRIPTION_NOT_SUPPORTED
+ *
+ */
+#define RIL_REQUEST_SET_DATA_SUBSCRIPTION  119
+#endif
 
 /**
  *  RIL_REQUEST_ALLOW_DATA
@@ -4163,7 +4245,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_ALLOW_DATA  20123
+#else
 #define RIL_REQUEST_ALLOW_DATA  123
+#endif
 
 /**
  * RIL_REQUEST_GET_HARDWARE_CONFIG
@@ -4175,7 +4261,11 @@ typedef struct {
  *
  * "response" is an array of  RIL_HardwareConfig.
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_HARDWARE_CONFIG 20124
+#else
 #define RIL_REQUEST_GET_HARDWARE_CONFIG 124
+#endif
 
 /**
  * RIL_REQUEST_SIM_AUTHENTICATION
@@ -4196,7 +4286,11 @@ typedef struct {
  *      int   sw2;
  *      char *simResponse;          Response in Base64 format, see 3GPP TS 31.102 7.1.2
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_AUTHENTICATION  20125
+#else
 #define RIL_REQUEST_SIM_AUTHENTICATION 125
+#endif
 
 /**
  * RIL_REQUEST_GET_DC_RT_INFO
@@ -4214,7 +4308,11 @@ typedef struct {
  *
  * See also: RIL_UNSOL_DC_RT_INFO_CHANGED
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_DC_RT_INFO 20126
+#else
 #define RIL_REQUEST_GET_DC_RT_INFO 126
+#endif
 
 /**
  * RIL_REQUEST_SET_DC_RT_INFO_RATE
@@ -4231,7 +4329,11 @@ typedef struct {
  * Valid errors:
  *  SUCCESS must not fail
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_DC_RT_INFO_RATE 20127
+#else
 #define RIL_REQUEST_SET_DC_RT_INFO_RATE 127
+#endif
 
 /**
  * RIL_REQUEST_SET_DATA_PROFILE
@@ -4247,7 +4349,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *  SUBSCRIPTION_NOT_AVAILABLE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_DATA_PROFILE 20128
+#else
 #define RIL_REQUEST_SET_DATA_PROFILE 128
+#endif
 
 /**
  * RIL_REQUEST_SHUTDOWN
@@ -4263,7 +4369,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SHUTDOWN 20129
+#else
 #define RIL_REQUEST_SHUTDOWN 129
+#endif
 
 /**
  * RIL_REQUEST_GET_DATA_CALL_PROFILE
@@ -4286,7 +4396,11 @@ typedef struct {
  *  RIL_E_DATA_CALL_PROFILE_NOT_AVAILABLE
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_DATA_CALL_PROFILE 111
+#else
 #define RIL_REQUEST_GET_DATA_CALL_PROFILE 130
+#endif
 
 /**
  * RIL_REQUEST_SIM_GET_ATR
@@ -4306,7 +4420,11 @@ typedef struct {
  * RADIO_NOT_AVAILABLE (radio resetting)
  * GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_GET_ATR 127
+#else
 #define RIL_REQUEST_SIM_GET_ATR 131
+#endif
 
 /***********************************************************************/
 
@@ -4795,7 +4913,11 @@ typedef struct {
  *
  * "response" is an array of RIL_CellInfo.
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_CELL_INFO_LIST 21036
+#else
 #define RIL_UNSOL_CELL_INFO_LIST 1036
+#endif
 
 /**
  * RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED
@@ -4810,7 +4932,11 @@ typedef struct {
  * "data" is NULL
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED 1036
+#else
 #define RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED 1037
+#endif
 
 /**
  * RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED
@@ -4826,7 +4952,11 @@ typedef struct {
  * ((const int *)data)[0] == 1 for Subscription Activated
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED 1041
+#else
 #define RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED 1038
+#endif
 
 /**
  * RIL_UNSOL_SRVCC_STATE_NOTIFY
@@ -4838,8 +4968,11 @@ typedef struct {
  * ((int *)data)[0] is of type const RIL_SrvccState
  *
  */
-
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_SRVCC_STATE_NOTIFY 21039
+#else
 #define RIL_UNSOL_SRVCC_STATE_NOTIFY 1039
+#endif
 
 /**
  * RIL_UNSOL_HARDWARE_CONFIG_CHANGED
@@ -4849,7 +4982,11 @@ typedef struct {
  * "data" is an array of RIL_HardwareConfig
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_HARDWARE_CONFIG_CHANGED 21040
+#else
 #define RIL_UNSOL_HARDWARE_CONFIG_CHANGED 1040
+#endif
 
 /**
  * RIL_UNSOL_DC_RT_INFO_CHANGED
@@ -4861,7 +4998,11 @@ typedef struct {
  * "data" is the most recent RIL_DcRtInfo
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_DC_RT_INFO_CHANGED  21041
+#else
 #define RIL_UNSOL_DC_RT_INFO_CHANGED 1041
+#endif
 
 /*
  * RIL_UNSOL_ON_SS
@@ -4872,7 +5013,11 @@ typedef struct {
  * "data" is const RIL_StkCcUnsolSsResponse *
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_ON_SS 1039
+#else
 #define RIL_UNSOL_ON_SS 1042
+#endif
 
 /**
  * RIL_UNSOL_STK_CC_ALPHA_NOTIFY
@@ -4882,7 +5027,11 @@ typedef struct {
  * "data" is const char * containing ALPHA string from UICC in UTF-8 format.
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_STK_CC_ALPHA_NOTIFY 1040
+#else
 #define RIL_UNSOL_STK_CC_ALPHA_NOTIFY 1043
+#endif
 
 /***********************************************************************/
 

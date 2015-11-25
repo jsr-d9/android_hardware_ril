@@ -783,6 +783,38 @@ error:
     at_response_free(p_response);
 }
 
+#ifdef RIL_VARIANT_LEGACY
+static void setUiccSubscription(int request, void *data, size_t datalen __unused, RIL_Token t)
+{
+    RIL_SelectUiccSub *uiccSubscrInfo;
+    uiccSubscrInfo = (RIL_SelectUiccSub *)data;
+    int response = 0;
+
+    RLOGD("setUiccSubscription()");
+    // TODO: DSDS: Need to implement this.
+    // workaround: send success for now.
+    RIL_onRequestComplete(t, RIL_E_SUCCESS, NULL, 0);
+
+    if (uiccSubscrInfo->act_status == RIL_UICC_SUBSCRIPTION_ACTIVATE) {
+        RLOGD("setUiccSubscription() : Activate Request: sending SUBSCRIPTION_STATUS_CHANGED");
+        response = 1; // ACTIVATED
+        RIL_onUnsolicitedResponse (
+            RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED,
+            &response, sizeof(response));
+    } else {
+        RLOGD("setUiccSubscriptionSource() : Deactivate Request");
+    }
+}
+
+static void setDataSubscription(int request, void *data, size_t datalen __unused, RIL_Token t)
+{
+    RLOGD("setDataSubscriptionSource()") ;
+    // TODO: DSDS: Need to implement this.
+    // workaround: send success for now.
+    RIL_onRequestComplete(t, RIL_E_SUCCESS, NULL, 0);
+}
+#endif
+
 static void requestDial(void *data, size_t datalen __unused, RIL_Token t)
 {
     RIL_Dial *p_dial;
@@ -2365,7 +2397,15 @@ onRequest (int request, void *data, size_t datalen, RIL_Token t)
         case RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE:
             requestSetCellInfoListRate(data, datalen, t);
             break;
+#ifdef RIL_VARIANT_LEGACY
+        case RIL_REQUEST_SET_UICC_SUBSCRIPTION:
+            setUiccSubscription(request, data, datalen, t);
+            break;
 
+        case RIL_REQUEST_SET_DATA_SUBSCRIPTION:
+            setDataSubscription(request, data, datalen, t);
+            break;
+#endif
         case RIL_REQUEST_GET_HARDWARE_CONFIG:
             requestGetHardwareConfig(data, datalen, t);
             break;
