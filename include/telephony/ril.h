@@ -3668,7 +3668,11 @@ typedef struct {
  *
  * "response" is an array of  RIL_CellInfo.
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_CELL_INFO_LIST 20109
+#else
 #define RIL_REQUEST_GET_CELL_INFO_LIST 109
+#endif
 
 /**
  * RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE
@@ -3688,7 +3692,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE 20110
+#else
 #define RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE 110
+#endif
 
 /**
  * RIL_REQUEST_SET_INITIAL_ATTACH_APN
@@ -3702,7 +3710,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *  SUBSCRIPTION_NOT_AVAILABLE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_INITIAL_ATTACH_APN 20111
+#else
 #define RIL_REQUEST_SET_INITIAL_ATTACH_APN 111
+#endif
 
 /**
  * RIL_REQUEST_IMS_REGISTRATION_STATE
@@ -3726,7 +3738,11 @@ typedef struct {
  *  RADIO_NOT_AVAILABLE
  *  GENERIC_FAILURE
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_IMS_REGISTRATION_STATE 109
+#else
 #define RIL_REQUEST_IMS_REGISTRATION_STATE 112
+#endif
 
 /**
  * RIL_REQUEST_IMS_SEND_SMS
@@ -3749,7 +3765,11 @@ typedef struct {
  *  GENERIC_FAILURE
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_IMS_SEND_SMS 110
+#else
 #define RIL_REQUEST_IMS_SEND_SMS 113
+#endif
 
 /**
  * RIL_REQUEST_GET_DATA_CALL_PROFILE
@@ -3772,7 +3792,11 @@ typedef struct {
  *  RIL_E_DATA_CALL_PROFILE_NOT_AVAILABLE
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_GET_DATA_CALL_PROFILE 111
+#else
 #define RIL_REQUEST_GET_DATA_CALL_PROFILE 114
+#endif
 
 /**
  * RIL_REQUEST_SET_UICC_SUBSCRIPTION
@@ -3790,7 +3814,11 @@ typedef struct {
  *  SUBSCRIPTION_NOT_SUPPORTED
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_UICC_SUBSCRIPTION  118
+#else
 #define RIL_REQUEST_SET_UICC_SUBSCRIPTION  115
+#endif
 
 /**
  *  RIL_REQUEST_SET_DATA_SUBSCRIPTION
@@ -3808,7 +3836,11 @@ typedef struct {
  *  SUBSCRIPTION_NOT_SUPPORTED
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SET_DATA_SUBSCRIPTION  119
+#else
 #define RIL_REQUEST_SET_DATA_SUBSCRIPTION  116
+#endif
 
 /**
  * RIL_REQUEST_SIM_TRANSMIT_BASIC
@@ -3824,7 +3856,11 @@ typedef struct {
  * SUCCESS
  * TO DO: add erros
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_TRANSMIT_BASIC 123
+#else
 #define RIL_REQUEST_SIM_TRANSMIT_BASIC 117
+#endif
 
 /**
  * RIL_REQUEST_SIM_OPEN_CHANNEL
@@ -3840,7 +3876,11 @@ typedef struct {
  * SUCCESS
  * TO DO: add erros
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_OPEN_CHANNEL 124
+#else
 #define RIL_REQUEST_SIM_OPEN_CHANNEL 118
+#endif
 
 /**
  * RIL_REQUEST_SIM_CLOSE_CHANNEL
@@ -3856,7 +3896,11 @@ typedef struct {
  * SUCCESS
  * TO DO: add erros
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_CLOSE_CHANNEL 125
+#else
 #define RIL_REQUEST_SIM_CLOSE_CHANNEL 119
+#endif
 
 /**
  * RIL_REQUEST_SIM_TRANSMIT_CHANNEL
@@ -3872,7 +3916,11 @@ typedef struct {
  * SUCCESS
  * TO DO: add erros
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_TRANSMIT_CHANNEL 126
+#else
 #define RIL_REQUEST_SIM_TRANSMIT_CHANNEL 120
+#endif
 
 /**
  * RIL_REQUEST_SIM_GET_ATR
@@ -3892,8 +3940,11 @@ typedef struct {
  * RADIO_NOT_AVAILABLE (radio resetting)
  * GENERIC_FAILURE
  */
-
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_REQUEST_SIM_GET_ATR 127
+#else
 #define RIL_REQUEST_SIM_GET_ATR 121
+#endif
 
 /***********************************************************************/
 
@@ -4382,7 +4433,11 @@ typedef struct {
  *
  * "response" is an array of RIL_CellInfo.
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_CELL_INFO_LIST 21036
+#else
 #define RIL_UNSOL_CELL_INFO_LIST 1036
+#endif
 
 /**
  * RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED
@@ -4397,7 +4452,11 @@ typedef struct {
  * "data" is NULL
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED 1036
+#else
 #define RIL_UNSOL_RESPONSE_IMS_NETWORK_STATE_CHANGED 1037
+#endif
 
 /**
  * RIL_UNSOL_ON_SS
@@ -4408,7 +4467,11 @@ typedef struct {
  * "data" is const RIL_StkCcUnsolSsResponse *
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_ON_SS 1039
+#else
 #define RIL_UNSOL_ON_SS 1038
+#endif
 
 
 /**
@@ -4419,7 +4482,11 @@ typedef struct {
  * "data" is const char * containing ALPHA string from UICC in UTF-8 format.
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_STK_CC_ALPHA_NOTIFY 1040
+#else
 #define RIL_UNSOL_STK_CC_ALPHA_NOTIFY 1039
+#endif
 
 /**
  * RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED
@@ -4435,7 +4502,11 @@ typedef struct {
  * ((const int *)data)[0] == 1 for Subscription Activated
  *
  */
+#ifdef RIL_VARIANT_LEGACY
+#define RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED 1041
+#else
 #define RIL_UNSOL_UICC_SUBSCRIPTION_STATUS_CHANGED 1040
+#endif
 /***********************************************************************/
 
 /* COMPATIBILITY WITH MAINLINE */

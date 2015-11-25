@@ -17,6 +17,8 @@
 ** limitations under the License.
 */
 
+#define DEBUG 1
+
 #include <telephony/ril_cdma_sms.h>
 #include <telephony/librilutils.h>
 #include <stdio.h>

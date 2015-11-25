@@ -89,7 +89,7 @@ namespace android {
 #define PRINTBUF_SIZE 8096
 
 // Enable RILC log
-#define RILC_LOG 0
+#define RILC_LOG 1
 
 #if RILC_LOG
     #define startRequest           sprintf(printBuf, "(")
@@ -258,6 +258,8 @@ extern "C" const char * failCauseToString(RIL_Errno);
 extern "C" const char * callStateToString(RIL_CallState);
 extern "C" const char * radioStateToString(RIL_RadioState);
 
+static int sendResponse (Parcel &p);
+
 #ifdef RIL_SHLIB
 extern "C" void RIL_onUnsolicitedResponse(int unsolResponse, void *data,
                                 size_t datalen);
@@ -389,9 +391,22 @@ processCommandBuffer(void *buffer, size_t buflen) {
         return 0;
     }
 
+#ifdef RIL_VARIANT_LEGACY
+    if (request > 0 && request < (int32_t)NUM_ELEMS(s_commands) 
+      && s_commands[request].requestNumber == 0) {
+        request += 20000;
+    }
+#endif
+
     if (request < 1 || request >= (int32_t)NUM_ELEMS(s_commands)) {
+        Parcel pErr;
         RLOGE("unsupported request code %d token %d", request, token);
         // FIXME this should perhaps return a response
+        pErr.writeInt32 (RESPONSE_SOLICITED);
+        pErr.writeInt32 (token);
+        pErr.writeInt32 (RIL_E_GENERIC_FAILURE);
+
+        sendResponse(pErr);
         return 0;
     }
 
@@ -1066,7 +1081,7 @@ dispatchImsGsmSms(Parcel &p, RequestInfo *pRI, uint8_t retry, int32_t messageRef
     rism.messageRef = messageRef;
 
     startRequest;
-    appendPrintBuf("%sformat=%d,", printBuf, rism.format);
+    appendPrintBuf("%sformat=%d,", printBuf, rism.tech);
     if (countStrings == 0) {
         // just some non-null pointer
         pStrings = (char **)alloca(sizeof(char *));
@@ -1510,8 +1525,8 @@ static void dispatchSetInitialAttachApn(Parcel &p, RequestInfo *pRI)
     pf.password = strdupReadString(p);
 
     startRequest;
-    appendPrintBuf("%sapn=%s, protocol=%s, auth_type=%d, username=%s, password=%s",
-            printBuf, pf.apn, pf.protocol, pf.auth_type, pf.username, pf.password);
+    appendPrintBuf("%sapn=%s, protocol=%s, authtype=%d, username=%s, password=%s",
+            printBuf, pf.apn, pf.protocol, pf.authtype, pf.username, pf.password);
     closeRequest;
     printRequest(pRI->token, pRI->pCI->requestNumber);
 
@@ -3416,6 +3431,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
 
     // Little self-check
 
+#ifndef RIL_VARIANT_LEGACY
     for (int i = 0; i < (int)NUM_ELEMS(s_commands); i++) {
         assert(i == s_commands[i].requestNumber);
     }
@@ -3424,6 +3440,7 @@ RIL_register (const RIL_RadioFunctions *callbacks) {
         assert(i + RIL_UNSOL_RESPONSE_BASE
                 == s_unsolResponses[i].requestNumber);
     }
+#endif
 
     // New rild impl calls RIL_startEventLoop() first
     // old standalone impl wants it here.
@@ -3748,6 +3765,14 @@ void RIL_onUnsolicitedResponse(int unsolResponse, const void *data,
     }
 
     unsolResponseIndex = unsolResponse - RIL_UNSOL_RESPONSE_BASE;
+
+#ifdef RIL_VARIANT_LEGACY
+    if (unsolResponseIndex > 0 && unsolResponseIndex < (int32_t)NUM_ELEMS(s_unsolResponses)
+      && s_unsolResponses[unsolResponseIndex].requestNumber == 0) {
+        unsolResponseIndex += 20000;
+        unsolResponse += 20000;
+    }
+#endif
 
     if ((unsolResponseIndex < 0)
         || (unsolResponseIndex >= (int32_t)NUM_ELEMS(s_unsolResponses))) {

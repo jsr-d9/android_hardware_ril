@@ -125,16 +125,31 @@
     {RIL_REQUEST_ACKNOWLEDGE_INCOMING_GSM_SMS_WITH_PDU, dispatchStrings, responseVoid},
     {RIL_REQUEST_STK_SEND_ENVELOPE_WITH_STATUS, dispatchString, responseSIM_IO},
     {RIL_REQUEST_VOICE_RADIO_TECH, dispatchVoiceRadioTech, responseInts},
+#ifndef RIL_VARIANT_LEGACY
 #ifndef RIL_NO_CELL_INFO_LIST
     {RIL_REQUEST_GET_CELL_INFO_LIST, dispatchVoid, responseCellInfoList},
     {RIL_REQUEST_SET_UNSOL_CELL_INFO_LIST_RATE, dispatchInts, responseVoid},
 #endif
     {RIL_REQUEST_SET_INITIAL_ATTACH_APN, dispatchSetInitialAttachApn, responseVoid},
+#endif
     {RIL_REQUEST_IMS_REGISTRATION_STATE, dispatchVoid, responseInts},
     {RIL_REQUEST_IMS_SEND_SMS, dispatchImsSms, responseSMS},
     {RIL_REQUEST_GET_DATA_CALL_PROFILE, dispatchInts, responseGetDataCallProfile},
+#ifdef RIL_VARIANT_LEGACY
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+#endif
     {RIL_REQUEST_SET_UICC_SUBSCRIPTION, dispatchUiccSubscripton, responseVoid},
     {RIL_REQUEST_SET_DATA_SUBSCRIPTION, dispatchVoid, responseVoid},
+#ifdef RIL_VARIANT_LEGACY
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+    {0, dispatchVoid, responseVoid},
+#endif
     {RIL_REQUEST_SIM_TRANSMIT_BASIC, dispatchSIM_IO, responseSIM_IO},
     {RIL_REQUEST_SIM_OPEN_CHANNEL, dispatchString, responseInts},
     {RIL_REQUEST_SIM_CLOSE_CHANNEL, dispatchInts, responseVoid},

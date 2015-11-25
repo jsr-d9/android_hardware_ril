@@ -17,6 +17,8 @@
 ** limitations under the License.
 */
 
+#define DEBUG 1
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <dlfcn.h>
