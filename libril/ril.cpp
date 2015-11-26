@@ -416,6 +416,13 @@ processCommandBuffer(void *buffer, size_t buflen, int client_id) {
         return 0;
     }
 
+#ifdef RIL_VARIANT_LEGACY
+    if (request > 0 && request < (int32_t)NUM_ELEMS(s_commands) 
+      && s_commands[request].requestNumber == 0) {
+        request += 20000;
+    }
+#endif
+
     if (request < 1 || request >= (int32_t)NUM_ELEMS(s_commands)) {
         ALOGE("unsupported request code %d token %d", request, token);
         // FIXME this should perhaps return a response
@@ -763,6 +770,15 @@ dispatchSIM_IO (Parcel &p, RequestInfo *pRI) {
     memset (&simIO, 0, sizeof(simIO));
 
     // note we only check status at the end
+
+#ifdef RIL_SUPPORTS_SEEK
+    simIO.v6.cla = 0;
+    if(pRI->pCI->requestNumber == RIL_REQUEST_SIM_TRANSMIT_BASIC ||
+            pRI->pCI->requestNumber == RIL_REQUEST_SIM_TRANSMIT_CHANNEL ) {
+        status = p.readInt32(&t);
+        simIO.v6.cla = (int)t;
+    }
+#endif
 
     status = p.readInt32(&t);
     simIO.v6.command = (int)t;
@@ -3689,6 +3705,14 @@ RIL_onUnsolicitedSendResponse(int unsolResponse, void *data,
 
     unsolResponseIndex = unsolResponse - RIL_UNSOL_RESPONSE_BASE;
 
+#ifdef RIL_VARIANT_LEGACY
+    if (unsolResponseIndex > 0 && unsolResponseIndex < (int32_t)NUM_ELEMS(s_unsolResponses)
+      && s_unsolResponses[unsolResponseIndex].requestNumber == 0) {
+        unsolResponseIndex += 20000;
+        unsolResponse += 20000;
+    }
+#endif
+
     if ((unsolResponseIndex < 0)
         || (unsolResponseIndex >= (int32_t)NUM_ELEMS(s_unsolResponses))) {
         ALOGE("unsupported unsolicited response code %d", unsolResponse);
@@ -3929,6 +3953,13 @@ requestToString(int request) {
         case RIL_REQUEST_SEND_SMS_EXPECT_MORE: return "SEND_SMS_EXPECT_MORE";
         case RIL_REQUEST_SETUP_DATA_CALL: return "SETUP_DATA_CALL";
         case RIL_REQUEST_SIM_IO: return "SIM_IO";
+#ifdef RIL_VARIANT_LEGACY
+        case RIL_REQUEST_SIM_TRANSMIT_BASIC: return "SIM_TRANSMIT_BASIC";
+        case RIL_REQUEST_SIM_OPEN_CHANNEL: return "SIM_OPEN_CHANNEL";
+        case RIL_REQUEST_SIM_CLOSE_CHANNEL: return "SIM_CLOSE_CHANNEL";
+        case RIL_REQUEST_SIM_TRANSMIT_CHANNEL: return "SIM_TRANSMIT_CHANNEL";
+        case RIL_REQUEST_SIM_GET_ATR: return "SIM_GET_ATR";
+#endif
         case RIL_REQUEST_SEND_USSD: return "SEND_USSD";
         case RIL_REQUEST_CANCEL_USSD: return "CANCEL_USSD";
         case RIL_REQUEST_GET_CLIR: return "GET_CLIR";
