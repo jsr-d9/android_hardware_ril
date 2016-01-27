@@ -12,7 +12,7 @@ LOCAL_SRC_FILES:= \
     at_tok.c
 
 LOCAL_SHARED_LIBRARIES := \
-    libcutils libutils libril
+    liblog libcutils libutils libril
 
 # for asprinf
 LOCAL_CFLAGS := -D_GNU_SOURCE
@@ -21,6 +21,7 @@ LOCAL_C_INCLUDES := $(KERNEL_HEADERS)
 
 LOCAL_CFLAGS += -DRIL_VARIANT_LEGACY
 LOCAL_CFLAGS += -DRIL_SUPPORTS_SEEK
+LOCAL_CFLAGS += -DHAVE_PTHREAD_COND_TIMEDWAIT_RELATIVE
 
 ifeq ($(TARGET_DEVICE),sooner)
   LOCAL_CFLAGS += -DOMAP_CSMI_POWER_CONTROL -DUSE_TI_COMMANDS
@@ -38,7 +39,6 @@ ifeq (foo,foo)
   #build shared library
   LOCAL_SHARED_LIBRARIES += \
       libcutils libutils
-  LOCAL_LDLIBS += -lpthread
   LOCAL_CFLAGS += -DRIL_SHLIB
   LOCAL_MODULE:= libreference-ril
   include $(BUILD_SHARED_LIBRARY)

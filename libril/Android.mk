@@ -8,6 +8,7 @@ LOCAL_SRC_FILES:= \
     ril_event.cpp
 
 LOCAL_SHARED_LIBRARIES := \
+    liblog \
     libutils \
     libbinder \
     libcutils \
@@ -18,8 +19,6 @@ LOCAL_CFLAGS += -DRIL_VARIANT_LEGACY
 LOCAL_CFLAGS += -DRIL_SUPPORTS_SEEK
 
 LOCAL_MODULE:= libril
-
-LOCAL_LDLIBS += -lpthread
 
 include $(BUILD_SHARED_LIBRARY)
 
@@ -41,8 +40,6 @@ LOCAL_CFLAGS += -DRIL_VARIANT_LEGACY
 LOCAL_CFLAGS += -DRIL_SUPPORTS_SEEK
 
 LOCAL_MODULE:= libril_static
-
-LOCAL_LDLIBS += -lpthread
 
 include $(BUILD_STATIC_LIBRARY)
 endif # ANDROID_BIONIC_TRANSITION

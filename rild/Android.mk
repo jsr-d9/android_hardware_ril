@@ -8,6 +8,7 @@ LOCAL_SRC_FILES:= \
 
 
 LOCAL_SHARED_LIBRARIES := \
+	liblog \
 	libcutils \
 	libril \
 	libdl
@@ -19,6 +20,8 @@ LOCAL_CFLAGS += -DRIL_SUPPORTS_SEEK
 LOCAL_MODULE:= rild
 LOCAL_MODULE_TAGS := optional
 
+LOCAL_C_INCLUDES += $(TARGET_OUT_HEADERS)/libril
+
 include $(BUILD_EXECUTABLE)
 
 # For radiooptions binary
@@ -29,6 +32,7 @@ LOCAL_SRC_FILES:= \
 	radiooptions.c
 
 LOCAL_SHARED_LIBRARIES := \
+	liblog \
 	libcutils \
 
 LOCAL_CFLAGS := \
