@@ -445,6 +445,7 @@ processCommandBuffer(void *buffer, size_t buflen, int client_id) {
     }
 
 #ifdef RIL_VARIANT_LEGACY
+    int errCode = RIL_E_GENERIC_FAILURE;
     CommandInfo * ci = NULL;
     if (request > 0) {
         // Translate RILJ req_id to RILC req_id
@@ -460,11 +461,13 @@ processCommandBuffer(void *buffer, size_t buflen, int client_id) {
         if (ci) {
             if (ci->requestNumber <= 0) {
                 request += 20000;
+                errCode = RIL_E_REQUEST_NOT_SUPPORTED;
             } else {
                 request = ci->requestNumber;
             }
         } else {
             request += 20000;
+            errCode = RIL_E_REQUEST_NOT_SUPPORTED;
         }
     }
 #endif
@@ -475,7 +478,11 @@ processCommandBuffer(void *buffer, size_t buflen, int client_id) {
         // FIXME this should perhaps return a response
         pErr.writeInt32 (RESPONSE_SOLICITED);
         pErr.writeInt32 (token);
+#ifdef RIL_VARIANT_LEGACY
+        pErr.writeInt32 (errCode);
+#else
         pErr.writeInt32 (RIL_E_GENERIC_FAILURE);
+#endif
 
         sendResponse(pErr, client_id);
         return 0;
@@ -1666,8 +1673,8 @@ static void dispatchUiccSubscripton(Parcel &p, RequestInfo *pRI) {
 
     appendPrintBuf("slot=%d, app_index=%d, act_status = %d", uicc_sub.slot, uicc_sub.app_index,
             uicc_sub.act_status);
-    ALOGD("dispatchUiccSubscription, slot=%d, app_index=%d, act_status = %d", uicc_sub.slot,
-            uicc_sub.app_index, uicc_sub.act_status);
+    ALOGD("dispatchUiccSubscription, slot=%d, app_index=%d, act_status = %d, sub_type = %d", uicc_sub.slot,
+            uicc_sub.app_index, uicc_sub.act_status, uicc_sub.sub_type);
     closeRequest;
     printRequest(pRI->token, pRI->pCI->requestNumber);
 
