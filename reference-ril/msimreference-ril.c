@@ -49,6 +49,10 @@
 #define LOG_NIDEBUG 0
 #include <utils/Log.h>
 
+#ifdef RIL_VARIANT_LEGACY
+#include <telephony/ril_log.h>
+#endif
+
 #define MAX_AT_RESPONSE 0x1000
 #define DSDS_PROPERTY        "dsds"
 #define DSDS_PROPERTY_LENGTH 4

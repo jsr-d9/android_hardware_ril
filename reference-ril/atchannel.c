@@ -40,6 +40,10 @@
 
 #include "misc.h"
 
+#ifdef RIL_VARIANT_LEGACY
+#include <telephony/ril_log.h>
+#endif
+
 #ifdef HAVE_ANDROID_OS
 #define USE_NP 1
 #endif /* HAVE_ANDROID_OS */

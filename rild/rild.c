@@ -39,6 +39,10 @@
 #include <private/android_filesystem_config.h>
 #include "hardware/qemu_pipe.h"
 
+#ifdef RIL_VARIANT_LEGACY
+#include <telephony/ril_log.h>
+#endif
+
 #define LIB_PATH_PROPERTY   "rild.libpath"
 #define LIB_ARGS_PROPERTY   "rild.libargs"
 #define MAX_LIB_ARGS        16

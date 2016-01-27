@@ -56,7 +56,8 @@
 #include <ril_event.h>
 
 #ifdef RIL_VARIANT_LEGACY
-#include <rilj.h>
+#include "rilj.h"
+#include <telephony/ril_log.h>
 #endif
 
 namespace android {
