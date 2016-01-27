@@ -166,7 +166,7 @@ int main(int argc, char **argv)
     if (strcmp(client, "0") == 0) {
         RIL_setRilSocketName("rild");
     } else if (strcmp(client, "1") == 0) {
-        RIL_setRilSocketName("rild1");
+        RIL_setRilSocketName("rild2");
     }
 
     if (rilLibPath == NULL) {
