@@ -33,10 +33,12 @@
 #define LOG_TAG "AT"
 #include <utils/Log.h>
 
+#ifndef RIL_VARIANT_LEGACY
 #ifdef HAVE_ANDROID_OS
 /* for IOCTL's */
 #include <linux/omap_csmi.h>
 #endif /*HAVE_ANDROID_OS*/
+#endif
 
 #include "misc.h"
 
@@ -472,6 +474,7 @@ static void *readerLoop(void *arg)
             processLine(line);
         }
 
+#ifndef RIL_VARIANT_LEGACY
 #ifdef HAVE_ANDROID_OS
         if (s_ackPowerIoctl > 0) {
             /* acknowledge that bytes have been read and processed */
@@ -479,6 +482,7 @@ static void *readerLoop(void *arg)
             s_readCount = 0;
         }
 #endif /*HAVE_ANDROID_OS*/
+#endif
     }
 
     onReaderClosed();
